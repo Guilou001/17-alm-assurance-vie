@@ -22,7 +22,7 @@ CURVE_URL = ("https://www.bankofcanada.ca/stats/results/csv"
              "?lookupPage=lookup_yield_curve.php&startRange=1986-01-01&searchRange=all")
 CPM_URL = "https://www.cia-ica.ca/app/themes/wicket/custom/dl_file.php?p=36361&fid=13826"
 
-UA = {"User-Agent": "lic laboratoire pedagogique (github.com/Guilou001/17-licat-alm-ca)"}
+UA = {"User-Agent": "lic laboratoire pedagogique (github.com/Guilou001/17-alm-assurance-vie)"}
 
 
 def fetch() -> None:
