@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Pour citer ce dépôt, utilisez les métadonnées ci-dessous."
+title: "licat-alm-ca : l'immunisation à l'épreuve de 2022 et le capital TSAV à l'épreuve du réalisé"
+authors:
+  - family-names: "Vaudescal"
+    given-names: "Guillaume"
+repository-code: "https://github.com/Guilou001/17-licat-alm-ca"
+license: MIT
+date-released: "2026-08-29"
