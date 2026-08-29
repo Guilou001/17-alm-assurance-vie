@@ -119,15 +119,39 @@ def test_narrow_barbell_violates_redington_condition():
     assert conv_a < conv_l
 
 
-def test_duration_match_is_exact():
+def test_duration_match_apparie_la_duration_en_DOLLARS():
+    # apparier les durations en ANNÉES sur un actif qui vaut 1,05 fois le passif laisse au surplus
+    # une exposition du PREMIER ordre au déplacement parallèle : c'est la duration en dollars que
+    # le théorème de Redington demande d'égaler pour protéger le surplus
     row = _flat(3.0)
     qx = _qx_constant(0.05)
     t, cf = annuity_cashflows(qx, n_lives=10, benefit=100.0)
     faces = duration_match(cf, t, row, surplus_initial=0.05)
     t_a, cf_a = zero_coupon_assets(faces, int(t.max()))
     r_l, r_a = initial_rate(row, t), initial_rate(row, t_a)
-    assert pv(cf_a, t_a, r_a) == pytest.approx(1.05 * pv(cf, t, r_l), rel=1e-9)
-    assert modified_duration(cf_a, t_a, r_a) == pytest.approx(modified_duration(cf, t, r_l), rel=1e-3)
+    pl, pa = pv(cf, t, r_l), pv(cf_a, t_a, r_a)
+    assert pa == pytest.approx(1.05 * pl, rel=1e-9)
+    assert pa * modified_duration(cf_a, t_a, r_a) == pytest.approx(
+        pl * modified_duration(cf, t, r_l), rel=1e-3)
+    # la duration en années de l'actif vaut donc celle du passif divisée par 1,05
+    assert modified_duration(cf_a, t_a, r_a) == pytest.approx(
+        modified_duration(cf, t, r_l) / 1.05, rel=1e-3)
+
+
+def test_le_surplus_ne_baisse_pas_au_premier_ordre_sous_un_choc_parallele():
+    # le banc mesure un surplus en DOLLARS : sous un petit déplacement parallèle, un barbell
+    # correctement apparié ne peut le faire baisser qu'au second ordre, donc pas du tout ici où
+    # l'actif est plus convexe que le passif
+    row = _flat(4.0)
+    qx = _qx_constant(0.04)
+    t, cf = annuity_cashflows(qx, n_lives=100, benefit=1000.0)
+    faces = duration_match(cf, t, row, mat_courte=2.0, mat_longue=30.0, surplus_initial=0.05)
+    t_a, cf_a = zero_coupon_assets(faces, int(t.max()))
+    r_l, r_a = initial_rate(row, t), initial_rate(row, t_a)
+    s0 = pv(cf_a, t_a, r_a) - pv(cf, t, r_l)
+    for bump in (-1.0, -0.5, 0.5, 1.0):
+        s = pv(cf_a, t_a, r_a + bump) - pv(cf, t, r_l + bump)
+        assert s >= s0 - 1e-6
 
 
 def test_bucket_match_preserves_value():

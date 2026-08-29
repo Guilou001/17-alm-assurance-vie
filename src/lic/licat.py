@@ -25,7 +25,7 @@ import pandas as pd
 
 from lic.curves import UIR, initial_rate, pv
 
-L_UIR = 0.40           # pb -> points de %, choc de l'UIR au Canada (rapporté)
+L_UIR = 0.40           # pb -> points de pourcentage, choc de l'UIR au Canada (rapporté)
 
 # (pente du coefficient a(t), ordonnée de a(t), pente de c(t), ordonnée de c(t))
 _A3 = (0.139468, -0.001873)     # scénarios 1 et 3 : a(t) = 0.139468 - 0.001873 t
@@ -42,7 +42,7 @@ SCENARIOS = {
 
 
 def shock_pct(t: np.ndarray, r_pct: np.ndarray, scenario: int) -> np.ndarray:
-    """Le choc (en points de %) aux échéances t <= 20, taux courants r en %."""
+    """Le choc (en points de pourcentage) aux échéances t <= 20, taux courants r en %."""
     spec = SCENARIOS[scenario]
     t = np.asarray(t, dtype=float)
     a = spec["a"][0] + spec["a"][1] * t

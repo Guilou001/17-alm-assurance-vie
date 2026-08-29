@@ -58,9 +58,9 @@ def lab(out: Path = Path("results"), debut: str = "2019-12", fin: str = "2026-08
     figures.fig_liability(t, cf, dl0, figs / "passif.png")
 
     strategies = {
-        "duration seule (barbell 5-25)": immunize.duration_match,
-        "taux clés (6 nœuds)": immunize.bucket_match,
-        "aucune (tout à 1 an)": immunize.cash_strategy,
+        "duration appariée (deux zéro-coupon, 5 et 25 ans)": immunize.duration_match,
+        "taux clés (six zéro-coupon : 1, 2, 5, 10, 20 et 30 ans)": immunize.bucket_match,
+        "aucune couverture (tout en zéro-coupon d'un an)": immunize.cash_strategy,
     }
     paths = {}
     for name, strat in strategies.items():
@@ -78,7 +78,7 @@ def lab(out: Path = Path("results"), debut: str = "2019-12", fin: str = "2026-08
     # l'actif du module est ramené à la valeur que le banc détient réellement à cette date
     r_calc = initial_rate(row_calc, t_c[viv])
     pl_calc = pv(cf[viv], t_c[viv], r_calc)
-    s_dur_calc = float(paths["duration seule (barbell 5-25)"].loc[d_calc])
+    s_dur_calc = float(paths["duration appariée (deux zéro-coupon, 5 et 25 ans)"].loc[d_calc])
     echelle = (pl_calc + s_dur_calc) / ((1.0 + 0.05) * pl_calc)
     faces = {m: f * echelle for m, f in faces.items()}
     horizon = int(np.ceil(t_c[viv].max()))
@@ -95,7 +95,7 @@ def lab(out: Path = Path("results"), debut: str = "2019-12", fin: str = "2026-08
     req = licat.requirement(a_g, p_g, grille, row_calc)
     pd.DataFrame([req]).round(1).to_csv(tables / "exigence_licat.csv", index=False)
 
-    s_dur = paths["duration seule (barbell 5-25)"]
+    s_dur = paths["duration appariée (deux zéro-coupon, 5 et 25 ans)"]
     apres = s_dur.loc[d_calc:]
     perte_realisee = float(s_dur.loc[d_calc] - apres.min())
     figures.fig_licat({k: v for k, v in req.items() if k.startswith("scenario")},

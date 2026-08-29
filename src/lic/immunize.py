@@ -22,10 +22,18 @@ def _rate(curve_row: pd.Series, t: np.ndarray) -> np.ndarray:
 def duration_match(liab_cf: np.ndarray, t: np.ndarray, curve_row: pd.Series,
                    mat_courte: float = 5.0, mat_longue: float = 25.0,
                    surplus_initial: float = 0.05) -> dict[float, float]:
-    """Deux zéro-coupon (barbell) qui égalent (1 + surplus) x PV du passif ET sa duration.
+    """Deux zéro-coupon (barbell) qui égalent (1 + surplus) x PV du passif et sa duration EN DOLLARS.
 
     Système 2x2 exact sur les valeurs marchandes v_c, v_l :
-    v_c + v_l = A ; (v_c D_c + v_l D_l)/A = D_passif.
+    v_c + v_l = A ; v_c D_c + v_l D_l = PL x D_passif.
+
+    La deuxième équation apparie la duration en DOLLARS, pas en années. C'est ce que le théorème
+    de Redington exige pour protéger le SURPLUS : égaler les durations en années sur un actif qui
+    vaut 1,05 fois le passif donne à l'actif une duration en dollars supérieure de 5 %, et le
+    surplus garde alors une exposition du PREMIER ordre au déplacement parallèle, le seul cas que
+    le théorème couvre. La signature du défaut est nette : à surplus nul la perte est quadratique,
+    à surplus de 5 % elle est linéaire. Corrigé le 2026-08-29 après l'audit ; apparier en années
+    protège le RATIO actif/passif, pas le surplus en dollars que ce dépôt mesure.
     """
     r = _rate(curve_row, t)
     pl = pv(liab_cf, t, r)
@@ -33,7 +41,7 @@ def duration_match(liab_cf: np.ndarray, t: np.ndarray, curve_row: pd.Series,
     a = (1.0 + surplus_initial) * pl
     d_c = float(mat_courte / (1.0 + _rate(curve_row, np.array([mat_courte]))[0] / 100.0))
     d_l = float(mat_longue / (1.0 + _rate(curve_row, np.array([mat_longue]))[0] / 100.0))
-    v_l = a * (dl - d_c) / (d_l - d_c)
+    v_l = (pl * dl - a * d_c) / (d_l - d_c)
     v_c = a - v_l
     if v_c < 0 or v_l < 0:
         raise ValueError("barbell impossible : la duration du passif sort de l'intervalle")
@@ -64,10 +72,14 @@ def bucket_match(liab_cf: np.ndarray, t: np.ndarray, curve_row: pd.Series,
             w_hi = (ti - lo) / (hi - lo)
             valeurs[lo] += v * (1.0 - w_hi)
             valeurs[hi] += v * w_hi
+    # le surplus est logé au nœud LE PLUS COURT et non réparti au prorata : le multiplier partout
+    # donnerait à l'actif des sensibilités par taux clés supérieures de 5 % à celles du passif, donc
+    # une exposition du premier ordre du surplus, exactement le défaut corrigé dans duration_match
+    valeurs[noeuds[0]] += surplus_initial * sum(valeurs.values())
     faces = {}
     for k, v in valeurs.items():
         df_k = (1.0 + _rate(curve_row, np.array([k]))[0] / 100.0) ** (-k)
-        faces[k] = v * (1.0 + surplus_initial) / df_k
+        faces[k] = v / df_k
     return faces
 
 

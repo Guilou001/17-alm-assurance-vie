@@ -10,11 +10,14 @@ recalculé à la lettre depuis la ligne directrice de l'OSFI. *English summary b
    Les chocs du chapitre 5 sont des fonctions de la RACINE CARRÉE des taux courants : fin
    2021, avec un 90 jours sous 0,5 %, le plus fort choc court prescrit parmi les quatre
    scénarios (le T+ du scénario « tout monte ») n'était que de +147 pb ; 2022-23 en a
-   livré +513 (mesuré). Résultat : l'exigence calculée au 2021-12 (9,9 M$, fixée par la
-   pentification, qui prescrivait -39 pb au court et +32 pb au long) n'a couvert que 67 %
-   de la perte ensuite réalisée par le livre apparié en duration (14,8 M$), une perte
-   venue d'un mouvement dont la direction d'aplatissement était scorée en GAIN par le
-   module. (Mesuré ; formules rapportées de la ligne directrice, section 5.1.2.1.)
+   livré +513 (mesuré). Résultat : l'exigence calculée au 2021-12 vaut 7,4 M$, fixée par
+   le scénario 1 (tout baisse), et la perte ensuite réalisée par le livre apparié en
+   duration vaut 7,9 M$ : une couverture de 93,5 % (mesuré,
+   `results/tables/exigence_vs_realise.csv`). Ce n'est pas la duration qui laisse passer
+   la perte, c'est la CONVEXITÉ : le barbell 5-25 en a moins que le passif à queue de
+   cinquante ans, si bien que le surplus baisse au second ordre dans les deux directions,
+   et davantage quand les taux baissent. (Mesuré ; formules rapportées de la ligne
+   directrice, section 5.1.2.1.)
 2. **Redington tient exactement là où son théorème s'applique, et pas un pas plus loin.**
    Duration appariée ET convexité d'actif supérieure : aucun choc parallèle ne peut
    entamer le surplus (testé en forme fermée sur un barbell large). Mais le barbell 5-25
@@ -22,9 +25,10 @@ recalculé à la lettre depuis la ligne directrice de l'OSFI. *English summary b
    le théorème ne dit de toute façon rien des déformations de pente, qui ont fait
    l'essentiel de 2020-2026. (Mesuré et testé.)
 3. **Le banc de 81 mois départage les trois stratégies sans appel.** L'appariement par
-   taux clés ramène le surplus à son point de départ (81,3 puis 80,6 M$, à travers la
-   tempête) ; la duration seule le laisse errer (de 75,7 à 101,4 M$, l'arrivée haute est
-   une chance de trajectoire, pas un mérite) ; l'absence de couverture le fait passer par
+   taux clés tient le surplus (81,3 M$ au départ, creux à 77,3, arrivée à 92,5 M$ : un
+   surplus immunisé s'accroît au taux sans risque, il ne dérive pas) ; la duration seule
+   le laisse errer (creux à 71,3, arrivée à 110,9 M$, et l'arrivée haute est une chance de
+   trajectoire, pas un mérite) ; l'absence de couverture le fait passer par
    l'INSOLVABILITÉ (-101,8 M$ en juillet 2020) avant de finir à +329 M$ : les deux queues
    du même risque non couvert. (Mesuré.)
 
@@ -106,12 +110,13 @@ apport extérieur.
 ![Surplus](results/figures/surplus.png)
 
 **Comment lire cette figure.** Le surplus (actif moins passif) mois par mois. La courbe
-jaune (taux clés) traverse la baisse de 2020 ET la hausse de 2022-23 (bande grise) pour
-finir où elle a commencé : c'est la définition opérationnelle d'une immunisation. La
-bleue (duration seule) finit 20 M$ plus haut qu'au départ : la déformation de la courbe
-lui a été favorable CETTE FOIS ; son errance (fourchette de 28,7 M$ : creux à 75,7 en
-avril 2020, sommet à 104,3 en avril 2021, arrivée à 101,4) est le prix de l'appariement
-grossier. La verte (aucune couverture) plonge à -101,8 M$ en juillet 2020,
+jaune (taux clés) traverse la baisse de 2020 ET la hausse de 2022-23 (bande grise) sans
+décrocher : elle passe de 81,3 à 92,5 M$ avec un creux à 77,3, c'est-à-dire qu'elle
+s'accroît à peu près au taux sans risque, ce qu'un surplus immunisé doit faire. La bleue
+(duration appariée par un seul barbell) erre sur une fourchette de 40,7 M$ : creux à 71,3
+en avril 2020, sommet à 112,0 en janvier 2026, arrivée à 110,9. La déformation de la
+courbe lui a été favorable CETTE FOIS ; l'errance est le prix de l'appariement grossier,
+qui égale la duration mais pas la convexité. La verte (aucune couverture) plonge à -101,8 M$ en juillet 2020,
 l'insolvabilité, puis finit à +329 M$ quand les taux montent : le même pari nu, gagné ou
 perdu selon l'année.
 
@@ -132,18 +137,23 @@ participant statique) vaut (mesuré, `results/tables/exigence_licat.csv`) :
 
 | Scénario | Perte de valeur nette |
 |---|---|
-| 1 (tout baisse) | -1,9 M$ (gain) |
-| 2 (aplatissement) | -9,8 M$ (gain) |
-| 3 (tout monte) | -1,0 M$ (gain) |
-| **4 (pentification)** | **+9,9 M$ = l'exigence** |
-| Pire perte de surplus réalisée après cette date | **14,8 M$** |
+| **1 (tout baisse)** | **+7,4 M$ = l'exigence** |
+| 2 (aplatissement) | -8,3 M$ (gain) |
+| 3 (tout monte) | -10,1 M$ (gain) |
+| 4 (pentification) | +5,6 M$ |
+| Pire baisse de surplus réalisée sur les 18 mois suivants | **7,9 M$** |
 
 ![LICAT](results/figures/licat.png)
 
-**Comment lire cette figure.** Les quatre barres sont les pertes prescrites ; seule la
-pentification (scénario 4 : -39 pb au court, +32 pb au long) mord un livre apparié en
-duration, et elle fixe l'exigence à 9,9 M$. La ligne verte est la perte réellement subie
-ensuite : 14,8 M$, une couverture de 67 %. Le double mécanisme est dans la formule : à un
+**Comment lire cette figure.** Les quatre barres sont les pertes prescrites ; deux mordent
+un livre apparié en duration en DOLLARS, et la plus lourde, le scénario 1 (tout baisse),
+fixe l'exigence à 7,4 M$. Un livre dont la duration en dollars est appariée ne perd rien
+au premier ordre : ce qui reste est un effet de convexité, et le barbell 5-25 en a moins
+que le passif, donc il perd des deux côtés. La ligne verte est la pire baisse de surplus
+réellement subie sur les dix-huit mois suivants, rebalancements et rentes payées compris :
+7,9 M$, une couverture de 93,5 %. Les deux grandeurs n'ont pas le même horizon, l'une
+étant une revalorisation instantanée et l'autre un creux de trajectoire ; le ratio mesure
+l'insuffisance du calibrage, pas une couverture au sens comptable (déclaré). Le double mécanisme est dans la formule : à un
 90 jours sous 0,5 % fin 2021, les chocs en racine carrée étaient petits (le plus fort
 choc court des quatre scénarios, +147 pb, quand la réalité en a livré +513) ; et le
 mouvement réalisé, une hausse générale à dominante d'APLATISSEMENT, allait dans la
@@ -173,7 +183,7 @@ valeur et duration.
    Pas de lissage sur six trimestres (réservé aux blocs participants), pas de fonds
    distincts, pas d'agrégation avec les autres risques du TSAV, et l'écart d'actualisation
    prescrit par 5.1.1 lui-même (90 % de l'écart corporatif, ultime 80 pb) est omis : le
-   chiffre de 9,9 M$ est le requis brut du scénario sur une valorisation sans risque, pas
+   chiffre de 7,4 M$ est le requis brut du scénario sur une valorisation sans risque, pas
    un ratio réglementaire. (Déclaré.)
 2. **La valorisation suit la structure du TSAV partout**, y compris pour le surplus
    « économique » du banc : l'UIR fixe au-delà de 20-70 ans est une convention
@@ -184,9 +194,21 @@ valeur et duration.
    duration du passif). (Précepte déclaré.)
 4. **Aucun frais, aucune prime, bloc fermé** : le banc isole la mécanique de taux.
    (Déclaré.)
-5. **Le pire scénario dépend du livre.** La pentification mord NOTRE barbell ; un livre
-   long en actif court aurait un autre pire scénario. Le constat de couverture (67 %)
-   vaut pour ce bloc et cette période, pas en général. (Déclaré.)
+5. **Le pire scénario dépend du livre.** La baisse générale mord NOTRE barbell, dont la
+   convexité est inférieure à celle du passif ; un livre long en actif court aurait un
+   autre pire scénario. Le constat de couverture (93,5 %) vaut pour ce bloc et cette
+   période, pas en général. (Déclaré.)
+6. **L'exigence et la perte réalisée n'ont pas le même horizon.** L'exigence est une
+   revalorisation INSTANTANÉE au 2021-12-31 ; la perte réalisée est le creux d'une
+   trajectoire de dix-huit mois, rebalancements et rentes payées compris. Le ratio des
+   deux mesure l'insuffisance du calibrage, pas une couverture au sens comptable.
+   (Déclaré.)
+7. **Le banc apparie la duration en DOLLARS depuis l'audit du 2026-08-29.** La première
+   version égalait les durations en ANNÉES sur un actif valant 1,05 fois le passif, ce qui
+   laissait au surplus une exposition du PREMIER ordre au déplacement parallèle, exactement
+   ce que le théorème de Redington sert à supprimer. Les chiffres publiés avant cette date
+   (exigence 9,9 M$, perte réalisée 14,8 M$, couverture 67 %) portaient ce défaut.
+   (Mesuré ; test `test_le_surplus_ne_baisse_pas_au_premier_ordre_sous_un_choc_parallele`.)
 
 ## Références
 
@@ -217,11 +239,12 @@ ROOT of current rates (T+ at 4 % = +327 bp, hand-tested), four prescribed scenar
 UIR 4.5 % shocked by 40 bp, worst-scenario requirement floored at zero. Verdict: computed
 on Dec-2021 (90-day rate below 0.5 %, so the LARGEST prescribed short shock across the
 four scenarios was only +147 bp while 2022-23 delivered +513, measured), the requirement
-was 9.9 M$ (binding scenario: the steepener, -39 bp short / +32 bp long) while the
-realized surplus loss through 2022-23 was 14.8 M$: 67 % coverage, and the realized move's
-flattening direction was one the module scored as a 9.8 M$ GAIN. Risk-free-only
+was 7.4 M$ (binding scenario: rates down) while the worst realized surplus drawdown over
+the following eighteen months was 7.9 M$: 93.5 % coverage. What the duration-matched book
+still loses is convexity, not duration: the 5-25 barbell is less convex than a liability
+with a fifty-year tail, so the surplus falls on both sides of a parallel move. Risk-free-only
 discounting: the 5.1.1 corporate-spread add-on is omitted and declared. Free data only,
-14 closed-form tests.
+15 closed-form tests.
 
 ## Licence et citation
 
