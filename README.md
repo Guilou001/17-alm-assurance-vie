@@ -8,11 +8,13 @@ recalculé à la lettre depuis la ligne directrice de l'OSFI. *English summary b
 
 1. **À taux plancher, les chocs prescrits du TSAV étaient petits, et 2022 les a enfoncés.**
    Les chocs du chapitre 5 sont des fonctions de la RACINE CARRÉE des taux courants : fin
-   2021, avec un 90 jours sous 0,5 %, le scénario le plus dur ne prescrivait que +147 pb au
-   court terme ; 2022-23 en a livré plus de 400. Résultat mesuré : l'exigence calculée au
-   2021-12 (9,9 M$, pire scénario : la pentification) n'a couvert que 67 % de la perte de
-   surplus ensuite réalisée par le livre apparié en duration (14,8 M$). (Mesuré ; formules
-   rapportées de la ligne directrice, section 5.1.2.1.)
+   2021, avec un 90 jours sous 0,5 %, le plus fort choc court prescrit parmi les quatre
+   scénarios (le T+ du scénario « tout monte ») n'était que de +147 pb ; 2022-23 en a
+   livré +513 (mesuré). Résultat : l'exigence calculée au 2021-12 (9,9 M$, fixée par la
+   pentification, qui prescrivait -39 pb au court et +32 pb au long) n'a couvert que 67 %
+   de la perte ensuite réalisée par le livre apparié en duration (14,8 M$), une perte
+   venue d'un mouvement dont la direction d'aplatissement était scorée en GAIN par le
+   module. (Mesuré ; formules rapportées de la ligne directrice, section 5.1.2.1.)
 2. **Redington tient exactement là où son théorème s'applique, et pas un pas plus loin.**
    Duration appariée ET convexité d'actif supérieure : aucun choc parallèle ne peut
    entamer le surplus (testé en forme fermée sur un barbell large). Mais le barbell 5-25
@@ -31,7 +33,8 @@ recalculé à la lettre depuis la ligne directrice de l'OSFI. *English summary b
 L'immunisation par la durée promet un surplus insensible aux taux, et le TSAV, le test de
 capital des assureurs vie canadiens, tarifie le risque de taux par quatre scénarios
 prescrits. Or entre 2020 et 2023 la courbe canadienne ne s'est pas déplacée : elle s'est
-TORDUE, l'écart 10 ans moins 3 mois passant de +195 à -204 pb. Que reste-t-il de la
+TORDUE, l'écart 10 ans moins 3 mois passant de +198 pb (25 mars 2022) à -212 pb
+(27 décembre 2023), en composition annuelle, la convention du dépôt. Que reste-t-il de la
 promesse de l'immunisation, et le capital prescrit couvrait-il la perte réellement subie ?
 
 ## Les données (100 % libres, téléchargées par script, jamais commitées)
@@ -59,7 +62,11 @@ obligations simples.
 
 La structure initiale (section 5.1.1, rapporté) : taux comptant publiés jusqu'à 20 ans,
 interpolation linéaire du taux vers le taux ultime (UIR, 4,5 % pour le Canada) entre 20 et
-70 ans, UIR au-delà. Les quatre scénarios (5.1.2.1) déforment cette structure par des
+70 ans, UIR au-delà. C'est la composante SANS RISQUE de 5.1.1 : la même section prescrit
+aussi un écart d'actualisation (90 % de l'écart d'un indice obligataire corporatif de 0 à
+20 ans, écart ultime de 80 pb, donc une actualisation ultime de 5,3 %) que le laboratoire
+OMET, l'actualisation se faisant au sans-risque pur (déclaré ; le niveau du passif en
+dépend, pas la mécanique des chocs). Les quatre scénarios (5.1.2.1) déforment cette structure par des
 chocs au 90 jours (T ou S) et au 20 ans (B ou C), fonctions linéaires de la racine carrée
 des taux planchers à 0,5 % :
 
@@ -102,16 +109,21 @@ apport extérieur.
 jaune (taux clés) traverse la baisse de 2020 ET la hausse de 2022-23 (bande grise) pour
 finir où elle a commencé : c'est la définition opérationnelle d'une immunisation. La
 bleue (duration seule) finit 20 M$ plus haut qu'au départ : la déformation de la courbe
-lui a été favorable CETTE FOIS ; son errance (fourchette de 26 M$) est le prix de
-l'appariement grossier. La verte (aucune couverture) plonge à -101,8 M$ en juillet 2020,
+lui a été favorable CETTE FOIS ; son errance (fourchette de 28,7 M$ : creux à 75,7 en
+avril 2020, sommet à 104,3 en avril 2021, arrivée à 101,4) est le prix de l'appariement
+grossier. La verte (aucune couverture) plonge à -101,8 M$ en juillet 2020,
 l'insolvabilité, puis finit à +329 M$ quand les taux montent : le même pari nu, gagné ou
 perdu selon l'année.
 
-Le creux résiduel du livre par taux clés (-9,5 M$ au pic des taux longs, septembre 2023)
-vient pour l'essentiel du coin réglementaire : au-delà de 20 ans le passif s'actualise en
-partie vers un UIR FIXE à 4,5 % pendant que les zéro-coupon de 30 ans sont au prix du
-marché ; l'écart se referme quand la courbe se normalise (mesuré sur la trajectoire ;
-décomposition exacte non isolée, déclaré).
+Le creux résiduel du livre par taux clés (-9,5 M$ en septembre 2023, au plus fort de la
+montée des taux longs ; le pic mensuel exact est octobre) vient du coin réglementaire :
+TOUS les flux au-delà de 20 ans, actifs comme passif, s'actualisent sur le segment
+interpolé vers l'UIR fixe à 4,5 %, mais pas avec la même sensibilité : le nœud d'actif à
+30 ans y bouge à 0,8 fois le 20 ans de marché, pendant que les flux de passif de 40 à
+50 ans, plus proches de l'UIR, bougent moins encore. L'appariement en valeur par nœuds ne
+compense pas cette divergence de sensibilités du segment réglementaire ; l'écart se
+referme quand la courbe se normalise (mesuré sur la trajectoire ; décomposition exacte
+non isolée, déclaré).
 
 ## Volet 4 : l'exigence prescrite contre la perte réalisée
 
@@ -129,13 +141,15 @@ participant statique) vaut (mesuré, `results/tables/exigence_licat.csv`) :
 ![LICAT](results/figures/licat.png)
 
 **Comment lire cette figure.** Les quatre barres sont les pertes prescrites ; seule la
-pentification (scénario 4) mord un livre apparié en duration, et elle fixe l'exigence à
-9,9 M$. La ligne verte est la perte réellement subie ensuite : 14,8 M$, une couverture de
-67 %. La cause est dans la formule : à un 90 jours sous 0,5 % fin 2021, les chocs en
-racine carrée prescrivaient +147 pb au court terme ; la réalité en a livré plus de 400.
-Le même mécanisme qui adoucit l'exigence à taux bas (et l'alourdit à taux hauts) fait
-qu'un choc historique partant du plancher passe au travers. (Mesuré ; le livre par taux
-clés a subi 14,0 M$, couverture semblable.)
+pentification (scénario 4 : -39 pb au court, +32 pb au long) mord un livre apparié en
+duration, et elle fixe l'exigence à 9,9 M$. La ligne verte est la perte réellement subie
+ensuite : 14,8 M$, une couverture de 67 %. Le double mécanisme est dans la formule : à un
+90 jours sous 0,5 % fin 2021, les chocs en racine carrée étaient petits (le plus fort
+choc court des quatre scénarios, +147 pb, quand la réalité en a livré +513) ; et le
+mouvement réalisé, une hausse générale à dominante d'APLATISSEMENT, allait dans la
+direction du scénario 2, que le module scorait en gain de 9,8 M$. L'exigence regardait
+d'un côté, la perte est venue de l'autre. (Mesuré ; le livre par taux clés a subi
+14,0 M$, couverture semblable.)
 
 ## Reproduire
 
@@ -155,10 +169,11 @@ valeur et duration.
 
 ## Limites, avec statut
 
-1. **Le périmètre est le module de taux, statique, non participant.** Pas de lissage sur
-   six trimestres (réservé aux blocs participants), pas de fonds distincts, pas de
-   composantes de crédit ni d'écart (sections 5.1.3 et suivantes), pas d'agrégation avec
-   les autres risques du TSAV : le chiffre de 9,9 M$ est le requis brut du scénario, pas
+1. **Le périmètre est le module de taux, statique, non participant, au sans-risque pur.**
+   Pas de lissage sur six trimestres (réservé aux blocs participants), pas de fonds
+   distincts, pas d'agrégation avec les autres risques du TSAV, et l'écart d'actualisation
+   prescrit par 5.1.1 lui-même (90 % de l'écart corporatif, ultime 80 pb) est omis : le
+   chiffre de 9,9 M$ est le requis brut du scénario sur une valorisation sans risque, pas
    un ratio réglementaire. (Déclaré.)
 2. **La valorisation suit la structure du TSAV partout**, y compris pour le surplus
    « économique » du banc : l'UIR fixe au-delà de 20-70 ans est une convention
@@ -190,8 +205,9 @@ A closed block of 10,000 male-65 life annuities (CIA CPM2014 mortality, 2013 sta
 column, declared) is backed by three self-financing books rebalanced monthly on real Bank
 of Canada zero-coupon curves, Dec-2019 to Aug-2026: duration-matched barbell (5y/25y),
 key-rate matched (six zero-coupon nodes), and no hedge (all 1-year). Measured: the
-key-rate book ends where it started (81.3 to 80.6 M$) through a curve that TWISTED by
-400 bp; the duration-only book wanders (75.7 to 101.4 M$, the happy ending is path luck,
+key-rate book ends where it started (81.3 to 80.6 M$) through a curve whose 10y-3m slope
+went from +198 to -212 bp; the duration-only book wanders (75.7 to 104.3 M$, ending at
+101.4: the happy ending is path luck,
 and its convexity VIOLATES Redington's condition against a 50-year-tail liability,
 tested); the unhedged book goes insolvent (-101.8 M$ in July 2020) before ending at
 +329 M$. Redington's theorem itself is verified in closed form where it applies (wide
@@ -199,9 +215,13 @@ barbell, parallel shocks). The LICAT 2025 chapter-5 interest rate module is
 re-implemented to the letter from OSFI's official PDF: shocks are linear in the SQUARE
 ROOT of current rates (T+ at 4 % = +327 bp, hand-tested), four prescribed scenarios,
 UIR 4.5 % shocked by 40 bp, worst-scenario requirement floored at zero. Verdict: computed
-on Dec-2021 (90-day rate below 0.5 %, so the prescribed short shock was only +147 bp),
-the requirement was 9.9 M$ (binding scenario: the steepener) while the realized surplus
-loss through 2022-23 was 14.8 M$: 67 % coverage. Free data only, 14 closed-form tests.
+on Dec-2021 (90-day rate below 0.5 %, so the LARGEST prescribed short shock across the
+four scenarios was only +147 bp while 2022-23 delivered +513, measured), the requirement
+was 9.9 M$ (binding scenario: the steepener, -39 bp short / +32 bp long) while the
+realized surplus loss through 2022-23 was 14.8 M$: 67 % coverage, and the realized move's
+flattening direction was one the module scored as a 9.8 M$ GAIN. Risk-free-only
+discounting: the 5.1.1 corporate-spread add-on is omitted and declared. Free data only,
+14 closed-form tests.
 
 ## Licence et citation
 
