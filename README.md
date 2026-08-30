@@ -4,6 +4,8 @@ Un bloc de rentes viagères (mortalité CPM2014), trois stratégies d'adossement
 courbes zéro-coupon réelles de 2019 à 2026, et le module de risque de taux du TSAV 2025
 recalculé à la lettre depuis la ligne directrice de l'OSFI. *English summary below.*
 
+Le même contenu en PDF : [rapport/rapport.pdf](rapport/rapport.pdf).
+
 ## En bref
 
 1. **À taux plancher, les chocs prescrits du TSAV étaient petits, et 2022 les a enfoncés.**

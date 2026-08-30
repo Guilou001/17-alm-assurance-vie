@@ -39,6 +39,8 @@
 
 Un bloc de rentes viagères (mortalité CPM2014), trois stratégies d'adossement sur les courbes zéro-coupon réelles de 2019 à 2026, et le module de risque de taux du TSAV 2025 recalculé à la lettre depuis la ligne directrice de l'OSFI. _English summary below._
 
+Le même contenu en PDF : #link("rapport/rapport.pdf")[rapport/rapport.pdf].
+
 == En bref
 
 + *À taux plancher, les chocs prescrits du TSAV étaient petits, et 2022 les a enfoncés.* Les chocs du chapitre 5 sont des fonctions de la RACINE CARRÉE des taux courants : fin 2021, avec un 90 jours sous 0,5 %, le plus fort choc court prescrit parmi les quatre scénarios (le T+ du scénario « tout monte ») n'était que de +147 pb ; 2022-23 en a livré +513 (mesuré). Résultat : l'exigence calculée au 2021-12 vaut 7,4 M\$, fixée par le scénario 1 (tout baisse), et la perte ensuite réalisée par le livre apparié en duration vaut 7,9 M\$ : une couverture de 93,5 % (mesuré, #raw("results/tables/exigence_vs_realise.csv")). Ce n'est pas la duration qui laisse passer la perte, c'est la CONVEXITÉ : le barbell 5-25 en a moins que le passif à queue de cinquante ans, si bien que le surplus baisse au second ordre dans les deux directions, et davantage quand les taux baissent. (Mesuré ; formules rapportées de la ligne directrice, section 5.1.2.1.)
