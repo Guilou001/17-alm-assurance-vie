@@ -1,12 +1,15 @@
-# L'immunisation à l'épreuve de 2022, et le capital TSAV à l'épreuve du réalisé
+# Protéger un portefeuille de rentes contre les variations de taux
 
-Un bloc de rentes viagères (mortalité CPM2014), trois stratégies d'adossement sur les
-courbes zéro-coupon réelles de 2019 à 2026, et le module de risque de taux du TSAV 2025
-recalculé à la lettre depuis la ligne directrice de l'OSFI. *English summary below.*
+Un assureur reçoit aujourd'hui des primes qu'il devra transformer en paiements pendant plusieurs décennies. Il achète donc des obligations pour que la valeur de ses actifs évolue comme celle de ses engagements. Toutefois, deux portefeuilles de même durée moyenne peuvent réagir différemment lorsque la courbe des taux change de forme.
+
+Le présent projet construit un bloc de rentes à partir de la table de mortalité CPM2014. Il compare trois stratégies de protection sur les courbes canadiennes de 2019 à 2026, puis calcule l'exigence de capital prévue par le Test de suffisance du capital des sociétés d'assurance-vie.
+
+**Résultat principal.** La protection par taux clés maintient le surplus entre 77,3 et 92,5 millions de dollars, à partir de 81,3 millions. La protection fondée seulement sur la durée moyenne est plus instable, tandis que l'absence de couverture fait tomber temporairement le surplus à -101,8 millions. Pour un portefeuille apparié en durée, l'exigence calculée à la fin de 2021 atteint 7,4 millions, contre une perte réalisée de 7,9 millions. L'écart restant vient de la courbure des prix obligataires et des déformations non parallèles des taux.
+
+Afin d'expliquer cette comparaison, nous présenterons d'abord les paiements de rentes et leur sensibilité aux taux. Dans un deuxième temps, nous construirons les trois portefeuilles de protection. Ensuite, nous suivrons leur surplus sur les courbes réellement observées et nous appliquerons les chocs réglementaires. Enfin, nous comparerons l'exigence au réalisé, puis nous présenterons les limites et la reproduction.
 
 Le même contenu en PDF : [rapport/rapport.pdf](rapport/rapport.pdf).
-
-## En bref
+## Les résultats en détail
 
 1. **À taux plancher, les chocs prescrits du TSAV étaient petits, et 2022 les a enfoncés.**
    Les chocs du chapitre 5 sont des fonctions de la RACINE CARRÉE des taux courants : fin
@@ -22,7 +25,7 @@ Le même contenu en PDF : [rapport/rapport.pdf](rapport/rapport.pdf).
    directrice, section 5.1.2.1.)
 2. **Redington tient exactement là où son théorème s'applique, et pas un pas plus loin.**
    Duration appariée ET convexité d'actif supérieure : aucun choc parallèle ne peut
-   entamer le surplus (testé en forme fermée sur un barbell large). Mais le barbell 5-25
+   entamer le surplus (testé avec une formule exacte sur un barbell large). Mais le barbell 5-25
    du banc viole la condition de convexité face à un passif à queue de 50 ans (testé), et
    le théorème ne dit de toute façon rien des déformations de pente, qui ont fait
    l'essentiel de 2020-2026. (Mesuré et testé.)
@@ -93,7 +96,7 @@ Le test `test_licat_shock_hand_values` refait les chocs à la main : à 4 %, T+ 
 
 Le théorème de Redington (1952) : valeur appariée, duration appariée, convexité d'actif
 au moins égale, alors un PETIT déplacement PARALLÈLE ne peut pas réduire le surplus. Le
-test `test_redington_wide_barbell_survives_parallel_shocks` le vérifie en forme fermée :
+test `test_redington_wide_barbell_survives_parallel_shocks` le vérifie avec une formule exacte :
 un barbell 2-30 ans satisfait les deux conditions et ne perd sous aucun choc parallèle de
 ± 100 pb. Mais le barbell 5-25 du banc, duration appariée, a MOINS de convexité que le
 passif à queue de cinquante ans (testé : la condition du théorème est violée), et surtout
@@ -173,10 +176,10 @@ uv run lic lab       # passif, trois bancs, exigence TSAV, trois figures (~1 min
 ```
 
 Les tests : structure initiale du TSAV (mi-chemin vers l'UIR à 45 ans, UIR à 70+),
-duration d'un zéro-coupon en forme fermée t/(1+r), rente à mortalité constante contre la
+duration d'une obligation zéro coupon calculée par une formule exacte t/(1+r), rente à mortalité constante contre la
 série géométrique, chocs du chapitre 5 à la main (327 pb à 4 %), plancher de la racine à
 0,5 %, UIR ± 40 pb, exigence nulle pour un livre parfaitement adossé, théorème de
-Redington en forme fermée ET sa violation par le barbell serré, appariements exacts en
+Redington avec une formule exacte et sa violation par le barbell serré, appariements exacts en
 valeur et duration.
 
 ## Limites, avec statut

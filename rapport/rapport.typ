@@ -1,4 +1,4 @@
-#set document(title: "L'immunisation à l'épreuve de 2022, et le capital TSAV à l'épreuve du réalisé", author: "Guillaume Vaudescal")
+#set document(title: "Protéger un portefeuille de rentes contre les variations de taux", author: "Guillaume Vaudescal")
 #set page(
   paper: "a4",
   margin: (x: 2.2cm, y: 2.4cm),
@@ -30,23 +30,29 @@
 
 #align(center)[
   #block(width: 100%)[
-    #text(size: 18pt, weight: "bold")[L'immunisation à l'épreuve de 2022, et le capital TSAV à l'épreuve du réalisé]
+    #text(size: 18pt, weight: "bold")[Protéger un portefeuille de rentes contre les variations de taux]
     #v(0.6em)
-    #text(size: 10pt, fill: luma(70))[Guillaume Vaudescal · 2026-08-30 · #link("https://github.com/Guilou001/17-alm-assurance-vie")[Guilou001/17-alm-assurance-vie]]
+    #text(size: 10pt, fill: luma(70))[Guillaume Vaudescal · 2026-09-04 · #link("https://github.com/Guilou001/17-alm-assurance-vie")[Guilou001/17-alm-assurance-vie]]
   ]
 ]
 #v(1.2em)
 #line(length: 100%, stroke: 0.6pt + luma(190))
 #v(0.8em)
 
-Un bloc de rentes viagères (mortalité CPM2014), trois stratégies d'adossement sur les courbes zéro-coupon réelles de 2019 à 2026, et le module de risque de taux du TSAV 2025 recalculé à la lettre depuis la ligne directrice de l'OSFI. _English summary below._
+Un assureur reçoit aujourd'hui des primes qu'il devra transformer en paiements pendant plusieurs décennies. Il achète donc des obligations pour que la valeur de ses actifs évolue comme celle de ses engagements. Toutefois, deux portefeuilles de même durée moyenne peuvent réagir différemment lorsque la courbe des taux change de forme.
+
+Le présent projet construit un bloc de rentes à partir de la table de mortalité CPM2014. Il compare trois stratégies de protection sur les courbes canadiennes de 2019 à 2026, puis calcule l'exigence de capital prévue par le Test de suffisance du capital des sociétés d'assurance-vie.
+
+*Résultat principal.* La protection par taux clés maintient le surplus entre 77,3 et 92,5 millions de dollars, à partir de 81,3 millions. La protection fondée seulement sur la durée moyenne est plus instable, tandis que l'absence de couverture fait tomber temporairement le surplus à -101,8 millions. Pour un portefeuille apparié en durée, l'exigence calculée à la fin de 2021 atteint 7,4 millions, contre une perte réalisée de 7,9 millions. L'écart restant vient de la courbure des prix obligataires et des déformations non parallèles des taux.
+
+Afin d'expliquer cette comparaison, nous présenterons d'abord les paiements de rentes et leur sensibilité aux taux. Dans un deuxième temps, nous construirons les trois portefeuilles de protection. Ensuite, nous suivrons leur surplus sur les courbes réellement observées et nous appliquerons les chocs réglementaires. Enfin, nous comparerons l'exigence au réalisé, puis nous présenterons les limites et la reproduction.
 
 Le même contenu en PDF : #link("rapport/rapport.pdf")[rapport/rapport.pdf].
 
-== En bref
+== Les résultats en détail
 
 + *À taux plancher, les chocs prescrits du TSAV étaient petits, et 2022 les a enfoncés.* Les chocs du chapitre 5 sont des fonctions de la RACINE CARRÉE des taux courants : fin 2021, avec un 90 jours sous 0,5 %, le plus fort choc court prescrit parmi les quatre scénarios (le T+ du scénario « tout monte ») n'était que de +147 pb ; 2022-23 en a livré +513 (mesuré). Résultat : l'exigence calculée au 2021-12 vaut 7,4 M\$, fixée par le scénario 1 (tout baisse), et la perte ensuite réalisée par le livre apparié en duration vaut 7,9 M\$ : une couverture de 93,5 % (mesuré, #raw("results/tables/exigence_vs_realise.csv")). Ce n'est pas la duration qui laisse passer la perte, c'est la CONVEXITÉ : le barbell 5-25 en a moins que le passif à queue de cinquante ans, si bien que le surplus baisse au second ordre dans les deux directions, et davantage quand les taux baissent. (Mesuré ; formules rapportées de la ligne directrice, section 5.1.2.1.)
-+ *Redington tient exactement là où son théorème s'applique, et pas un pas plus loin.* Duration appariée ET convexité d'actif supérieure : aucun choc parallèle ne peut entamer le surplus (testé en forme fermée sur un barbell large). Mais le barbell 5-25 du banc viole la condition de convexité face à un passif à queue de 50 ans (testé), et le théorème ne dit de toute façon rien des déformations de pente, qui ont fait l'essentiel de 2020-2026. (Mesuré et testé.)
++ *Redington tient exactement là où son théorème s'applique, et pas un pas plus loin.* Duration appariée ET convexité d'actif supérieure : aucun choc parallèle ne peut entamer le surplus (testé avec une formule exacte sur un barbell large). Mais le barbell 5-25 du banc viole la condition de convexité face à un passif à queue de 50 ans (testé), et le théorème ne dit de toute façon rien des déformations de pente, qui ont fait l'essentiel de 2020-2026. (Mesuré et testé.)
 + *Le banc de 81 mois départage les trois stratégies sans appel.* L'appariement par taux clés tient le surplus (81,3 M\$ au départ, creux à 77,3, arrivée à 92,5 M\$ : un surplus immunisé s'accroît au taux sans risque, il ne dérive pas) ; la duration seule le laisse errer (creux à 71,3, arrivée à 110,9 M\$, et l'arrivée haute est une chance de trajectoire, pas un mérite) ; l'absence de couverture le fait passer par l'INSOLVABILITÉ (-101,8 M\$ en juillet 2020) avant de finir à +329 M\$ : les deux queues du même risque non couvert. (Mesuré.)
 
 == La question
@@ -94,7 +100,7 @@ avec interpolation linéaire des coefficients entre 0,25 et 20 ans (les polynôm
 
 == Volet 2 : Redington, la promesse exacte et ses bords
 
-Le théorème de Redington (1952) : valeur appariée, duration appariée, convexité d'actif au moins égale, alors un PETIT déplacement PARALLÈLE ne peut pas réduire le surplus. Le test #raw("test_redington_wide_barbell_survives_parallel_shocks") le vérifie en forme fermée : un barbell 2-30 ans satisfait les deux conditions et ne perd sous aucun choc parallèle de ± 100 pb. Mais le barbell 5-25 du banc, duration appariée, a MOINS de convexité que le passif à queue de cinquante ans (testé : la condition du théorème est violée), et surtout le théorème ne couvre ni les grands chocs ni les déformations : tout ce qui a compté entre 2020 et 2023.
+Le théorème de Redington (1952) : valeur appariée, duration appariée, convexité d'actif au moins égale, alors un PETIT déplacement PARALLÈLE ne peut pas réduire le surplus. Le test #raw("test_redington_wide_barbell_survives_parallel_shocks") le vérifie avec une formule exacte : un barbell 2-30 ans satisfait les deux conditions et ne perd sous aucun choc parallèle de ± 100 pb. Mais le barbell 5-25 du banc, duration appariée, a MOINS de convexité que le passif à queue de cinquante ans (testé : la condition du théorème est violée), et surtout le théorème ne couvre ni les grands chocs ni les déformations : tout ce qui a compté entre 2020 et 2023.
 
 == Volet 3 : le banc de surplus (mesuré, #raw("results/tables/surplus_mensuel.csv"))
 
@@ -137,7 +143,7 @@ Au 2021-12, la veille du choc, l'exigence du module (livre duration, périmètre
 
 #raw("uv sync --locked --all-extras\nuv run pytest        # 14 tests fermés, sans réseau\nuv run lic fetch     # courbe BdC (~17 Mo) + CPM2014 (ICA, 72 Ko)\nuv run lic lab       # passif, trois bancs, exigence TSAV, trois figures (~1 min)", block: true, lang: "bash")
 
-Les tests : structure initiale du TSAV (mi-chemin vers l'UIR à 45 ans, UIR à 70+), duration d'un zéro-coupon en forme fermée t/(1+r), rente à mortalité constante contre la série géométrique, chocs du chapitre 5 à la main (327 pb à 4 %), plancher de la racine à 0,5 %, UIR ± 40 pb, exigence nulle pour un livre parfaitement adossé, théorème de Redington en forme fermée ET sa violation par le barbell serré, appariements exacts en valeur et duration.
+Les tests : structure initiale du TSAV (mi-chemin vers l'UIR à 45 ans, UIR à 70+), duration d'une obligation zéro coupon calculée par une formule exacte t/(1+r), rente à mortalité constante contre la série géométrique, chocs du chapitre 5 à la main (327 pb à 4 %), plancher de la racine à 0,5 %, UIR ± 40 pb, exigence nulle pour un livre parfaitement adossé, théorème de Redington avec une formule exacte et sa violation par le barbell serré, appariements exacts en valeur et duration.
 
 == Limites, avec statut
 
